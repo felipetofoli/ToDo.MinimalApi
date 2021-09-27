@@ -16,8 +16,6 @@ jobs:
 
       - name: Setup .NET Core
         uses: actions/setup-dotnet@v1
-        with:
-            dotnet-version: 6.0.100-rc.1.21423.6
 
       - name: Cache SonarCloud packages
         uses: actions/cache@v1
