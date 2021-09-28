@@ -68,5 +68,29 @@ namespace MinimalApi.Tests
             Assert.Equal(doneDefaultValue, todoItem.Done);
             Assert.False(string.IsNullOrWhiteSpace(todoItem.Id));
         }
+
+        [Fact]
+        public async Task PostToDoItem_WhenNotSpecifyADescription_ShouldReturnBadRequest()
+        {
+            await using var application = new MinimalApiApplication();
+
+            var client = application.CreateClient();
+            var response = await client.PostAsJsonAsync("/todos", new { });
+
+            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+        }
+
+        [Fact]
+        public async Task PostToDoItem_WhenSpecifyAnEmptyDescription_ShouldReturnBadRequest()
+        {
+            const string toDoDescription = "";
+
+            await using var application = new MinimalApiApplication();
+
+            var client = application.CreateClient();
+            var response = await client.PostAsJsonAsync("/todos", new CreateToDoRequest(toDoDescription));
+
+            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+        }
     }
 }
