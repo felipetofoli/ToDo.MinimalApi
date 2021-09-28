@@ -19,6 +19,9 @@ app.MapGet("/todos/{id}", (string id, IDatabase database) =>
 
 app.MapPost("/todos", (CreateToDoRequest toDo, IDatabase database) =>
 {
+    if (toDo is null || string.IsNullOrWhiteSpace(toDo.Description))
+        return Results.BadRequest("A todo description must be specified.");
+
     var newToDo = new ToDo
     {
         Id = Guid.NewGuid().ToString(),
