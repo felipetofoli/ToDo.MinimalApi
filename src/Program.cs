@@ -1,8 +1,15 @@
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddSingleton<IDatabase, InMemoryDatabase>();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+
+app.UseSwagger();
+app.UseSwaggerUI(c => c.SwaggerEndpoint("v1/swagger.json", $"{builder.Environment.ApplicationName} v1"));
+
+app.MapFallback(() => Results.Redirect("/swagger"));
 
 app.MapGet("/todos", (IDatabase database) =>
 {
